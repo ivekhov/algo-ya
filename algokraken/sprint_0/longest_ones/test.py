@@ -1,0 +1,1 @@
+j = input()s = input()res = 0for stone in s:    if stone in j:        res += 1print(res)

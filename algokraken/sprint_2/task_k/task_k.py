@@ -1,0 +1,1 @@
+def solution(n):	if n == 0:		return 1	if n <= 1:		return 1		return solution(n - 1) + solution(n - 2)def main():	with open('input.txt', 'r') as f:		n = int(f.readline().rstrip())		res = solution(n)	with open('output.txt', 'w') as f:		f.write(str(res))if __name__ == '__main__':	main()
