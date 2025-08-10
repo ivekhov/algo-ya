@@ -47,7 +47,6 @@ resp:
 
 '''
 
-import sys
 import time
 
 

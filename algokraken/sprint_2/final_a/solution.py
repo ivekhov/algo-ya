@@ -1,8 +1,19 @@
 '''
-Успешная посылка: 140826719
+Успешная посылка: 
+140879860
+140826719 (предыдущий сабмит)
 https://contest.yandex.ru/contest/22781/run-report/140826719/
 
 Задача: https://contest.yandex.ru/contest/22781/problems/A/
+
+==Изменения==
+1. Добавил классы ошибок DequeEmptyError и DequeFullError
+2. В выводе в файл используется 'error', сообщение самой ошибки не выводится,
+т к показалось некорректным заменять в классах ошибок содержательноый текст на 
+абстрактный 'error' только чтобы использовать в скрипте переменную e. 
+
+Тестирование у меня производится с помощью pytest, здесь не прикладываю, т к 
+не требуется в задаче. 
 
 
 ==ПРИНЦИП РАБОТЫ==
@@ -60,6 +71,14 @@ https://contest.yandex.ru/contest/22781/run-report/140826719/
 значение. В примере это int. 
 
 '''
+class DequeEmptyError(Exception):
+	def __init__(self):
+		super().__init__("Deque is empty")
+
+class DequeFullError(Exception):
+	def __init__(self):
+		super().__init__("Deque is full")
+
 class Deque:
 	def __init__(self, max_size):
 		self.max_size = max_size
@@ -69,72 +88,82 @@ class Deque:
 		self.tail = 0
 		
 	def push_back(self, value):
-		if self.size != self.max_size:
-			self.deque[self.tail] = value
-			self.tail = (self.tail + 1) % self.max_size
-			self.size += 1
+		if self.size == self.max_size:
+			raise DequeFullError()
+		self.deque[self.tail] = value
+		self.tail = (self.tail + 1) % self.max_size
+		self.size += 1
 
 	def pop_back(self):
-		if self.size != 0:
-			self.tail = (self.tail - 1) % self.max_size
-			item = self.deque[self.tail]
-			self.deque[self.tail] = None
-			self.size -= 1
-			return item
+		if self.size == 0:
+			raise DequeEmptyError()
+		self.tail = (self.tail - 1) % self.max_size
+		item = self.deque[self.tail]
+		self.deque[self.tail] = None
+		self.size -= 1
+		return item
 
 	def push_front(self, value):
-		if self.size != self.max_size:
-			self.head = (self.head - 1) % self.max_size
-			self.deque[self.head] = value
-			self.size += 1
+		if self.size == self.max_size:
+			raise DequeFullError()
+		self.head = (self.head - 1) % self.max_size
+		self.deque[self.head] = value
+		self.size += 1
 
 	def pop_front(self):
-		if self.size != 0:
-			item = self.deque[self.head]
-			self.deque[self.head] = None
-			self.head = (self.head + 1) % self.max_size
-			self.size -= 1
-			return item
+		if self.size == 0:
+			raise DequeEmptyError()
+		item = self.deque[self.head]
+		self.deque[self.head] = None
+		self.head = (self.head + 1) % self.max_size
+		self.size -= 1
+		return item
 
 	def is_empty(self):
 		return self.size == 0
 
 
-def main():
-	with open('input.txt', 'r') as f:
+def main(input_file='input.txt', output_file='output.txt'):
+	with open(input_file, 'r') as f:
 		n = int(f.readline().rstrip())
 		max_size = int(f.readline().rstrip())
 		deque = Deque(max_size)
-		with open('output.txt', 'w') as f_out:
+		with open(output_file, 'w') as f_out:
 			for _ in range(n):
 				commands = f.readline().rstrip().split(' ')
 
 				if commands[0] == 'push_front':
-					if deque.size != max_size:
+					try:
 						deque.push_front(int(commands[1]))
-					else:
-						f_out.write(f'error\n')
+					except DequeFullError:
+						f_out.write('error\n')
 
 				elif commands[0] == 'pop_front':
-					if deque.is_empty():
-						res = 'error'
-					else:
-						res = deque.pop_front()			
-					f_out.write(f'{str(res)}\n')
+					try:
+						res = deque.pop_front()
+						f_out.write(f'{str(res)}\n')
+					except DequeEmptyError:
+						f_out.write('error\n')
 
 				elif commands[0] == 'push_back':
-					if deque.size != max_size:
+					try:
 						deque.push_back(int(commands[1]))
-					else:
-						f_out.write(f'error\n')
+					except DequeFullError:
+						f_out.write('error\n')
 
 				elif commands[0] == 'pop_back':
-					if deque.is_empty():
-						res = 'error'
-					else:
-						res = deque.pop_back()			
-					f_out.write(f'{str(res)}\n')
+					try:
+						res = deque.pop_back()
+						f_out.write(f'{str(res)}\n')
+					except DequeEmptyError:
+						f_out.write('error\n')
 
 
 if __name__ == '__main__':
-	main()
+	fixtures =[
+        ['input.txt', 'output.txt'],
+        # ['input_2.txt', 'output_2.txt'],
+        # ['input_3.txt', 'output_3.txt'],
+    ]
+	for fixture in fixtures:
+		main(fixture[0], fixture[1])

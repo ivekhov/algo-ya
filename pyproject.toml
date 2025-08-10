@@ -1,10 +1,17 @@
+
 [project]
 name = "algo-ya"
-version = "0.1.0"
+version = "0.1.3"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "pytest>=8.4.1",
     "ruff>=0.12.8",
+    "algokraken",
 ]
+
+
+[tool.uv.sources]
+algokraken = { path = "./algokraken", editable = true }
+

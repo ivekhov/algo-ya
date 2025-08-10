@@ -7,7 +7,6 @@
 """
 
 import math
-from fractions import Fraction
 
 
 def catalan_formula_factorial(n):

@@ -1,5 +1,4 @@
 # https://contest.yandex.ru/contest/22450/run-report/134013245/
-import sys
 
 
 def find_distance(cur_idx, left_zero_idx, right_zero_idx):

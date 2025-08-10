@@ -1,5 +1,4 @@
 # https://contest.yandex.ru/contest/22450/run-report/134101202/
-import sys
 from typing import List
 
 

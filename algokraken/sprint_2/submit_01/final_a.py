@@ -113,7 +113,7 @@ def main():
 					if deque.size != max_size:
 						deque.push_front(int(commands[1]))
 					else:
-						f_out.write(f'error\n')
+						f_out.write('error\n')
 
 				elif commands[0] == 'pop_front':
 					if deque.is_empty():
@@ -126,7 +126,7 @@ def main():
 					if deque.size != max_size:
 						deque.push_back(int(commands[1]))
 					else:
-						f_out.write(f'error\n')
+						f_out.write('error\n')
 
 				elif commands[0] == 'pop_back':
 					if deque.is_empty():

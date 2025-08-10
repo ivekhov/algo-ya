@@ -1,7 +1,5 @@
 # https://contest.yandex.ru/contest/22450/run-report/134041699/
 
-import sys
-import time
 from collections import Counter
 
 

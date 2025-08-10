@@ -1,0 +1,1 @@
+def read_file_content(file_path: str) -> str:    """Function for read file content from path into string.    Args:        file_path (str): Full absolute path to file.    Returns:        str: File content in string.    """    with open(file_path) as file:        return file.read()
